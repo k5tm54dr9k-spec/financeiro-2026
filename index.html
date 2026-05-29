@@ -1,269 +1,600 @@
 <!DOCTYPE html>
-<script type="application/json" id="cowork-artifact-meta">
-{
-  "name": "Financial Dashboard 2026",
-  "schemaVersion": 1,
-  "description": "Interactive financial dashboard (Option C) built from Lucas's hours/salary sheet: metric cards (patrimony, incoming, projected total, YTD), monthly earnings chart (approx vs payslip), full monthly detail, May-June projection, and analysis. Static data extracted from the uploaded image."
-}
-</script>
-<html lang="en">
+<html lang="pt">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Financial Dashboard 2026</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js" integrity="sha384-iU8HYtnGQ8Cy4zl7gbNMOhsDTTKX02BTXptVP/vqAWIaTfM7isw76iyZCsjL2eVi" crossorigin="anonymous"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Planeamento Financeiro 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
 <style>
-:root{color-scheme:light;
- --bg:#f4f6fa;--card:#ffffff;--ink:#1a2230;--muted:#667085;--line:#e6e9f0;
- --navy:#1f3a5f;--blue:#2e75b6;--lblue:#eaf1fb;--green:#2e7d32;--red:#c0392b;
- --amber:#9a6b00;--c1:#e8f1fc;--c2:#e9f5ec;--c3:#fdeee6;--c4:#fcf6e3;}
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink);
- line-height:1.5;-webkit-font-smoothing:antialiased}
-.wrap{max-width:1080px;margin:0 auto;padding:24px 20px 60px}
-header.top{background:var(--navy);color:#fff;border-radius:14px;padding:22px 26px;margin-bottom:18px}
-header.top h1{font-size:24px;font-weight:700;letter-spacing:.2px}
-header.top p{font-size:13px;opacity:.85;margin-top:4px}
-nav{position:sticky;top:0;z-index:5;display:flex;gap:6px;flex-wrap:wrap;background:var(--bg);
- padding:10px 0 14px;margin-bottom:6px}
-nav a{font-size:13px;font-weight:700;color:var(--navy);text-decoration:none;background:var(--card);
- border:1px solid var(--line);padding:8px 14px;border-radius:999px;transition:.15s}
-nav a:hover{background:var(--lblue);border-color:var(--blue)}
-h2.sec{font-size:18px;font-weight:700;color:var(--navy);margin:26px 0 12px;display:flex;align-items:center;gap:8px}
-h2.sec::before{content:"";width:5px;height:18px;background:var(--blue);border-radius:3px;display:inline-block}
-h3{font-size:14px;font-weight:700;color:var(--navy);margin:0 0 8px}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
-.card{border-radius:14px;padding:16px 18px;border:1px solid var(--line)}
-.card .lab{font-size:11px;font-weight:700;letter-spacing:.6px;color:var(--muted);text-transform:uppercase}
-.card .val{font-size:26px;font-weight:700;margin-top:6px}
-.card.k1{background:var(--c1)} .card.k2{background:var(--c2)}
-.card.k3{background:var(--c4)} .card.k4{background:var(--c3)}
-.card .sub{font-size:11px;color:var(--muted);margin-top:4px}
-.grid2{display:grid;grid-template-columns:1.4fr 1fr;gap:16px;align-items:start}
-@media(max-width:760px){.grid2{grid-template-columns:1fr}}
-.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
-table{width:100%;border-collapse:collapse;font-size:13px}
-th,td{padding:8px 10px;text-align:right;border-bottom:1px solid var(--line)}
-th:first-child,td:first-child{text-align:left}
-thead th{background:var(--lblue);color:var(--navy);font-weight:700;font-size:12px;
- position:sticky;border-bottom:2px solid var(--blue)}
-tbody tr:hover{background:#f7f9fd}
-tr.total td{font-weight:700;background:#eef3fb;border-top:2px solid var(--blue)}
-.pos{color:var(--green);font-weight:700}.neg{color:var(--red);font-weight:700}
-.muted{color:var(--muted)}.tag{font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;
- background:#fdecea;color:var(--red);margin-left:6px}
-.month-h{font-size:14px;font-weight:700;color:#fff;background:var(--blue);
- padding:7px 12px;border-radius:8px 8px 0 0;margin-top:14px}
-.chartbox{position:relative;height:300px}
-.note{font-size:12px;color:var(--muted);font-style:italic;margin-top:10px;line-height:1.6}
-.kv{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--line);font-size:13px}
-.kv:last-child{border-bottom:none}
-.kv.tot{font-weight:700;color:var(--navy);border-top:2px solid var(--blue);border-bottom:none}
-.net{background:var(--c2);border-radius:10px;padding:12px 14px;margin-top:10px;
- display:flex;justify-content:space-between;font-weight:700;font-size:15px;color:var(--green)}
-.legend{font-size:11px;color:var(--muted);margin-top:8px}
-.foot{font-size:11px;color:var(--muted);text-align:center;margin-top:30px}
+:root {
+  --bg: #f7f6f3;
+  --surface: #ffffff;
+  --surface2: #f0efe9;
+  --border: rgba(0,0,0,0.08);
+  --border2: rgba(0,0,0,0.14);
+  --text: #1a1917;
+  --text2: #6b6960;
+  --text3: #9e9b92;
+  --green: #2d6a10; --green-bg: #e8f5e0; --green-mid: #639922;
+  --amber: #7f5c00; --amber-bg: #fef3d0; --amber-mid: #ba7517;
+  --red: #a32d2d; --red-bg: #fceaea; --red-mid: #e24b4a;
+  --blue: #0c447c; --blue-bg: #e6f1fb; --blue-mid: #378add;
+  --radius: 10px; --radius-sm: 6px;
+  --mono: 'DM Mono', monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+/* Layout */
+.shell { display: flex; min-height: 100vh; }
+.sidebar { width: 220px; background: var(--surface); border-right: 0.5px solid var(--border2); padding: 24px 0; display: flex; flex-direction: column; flex-shrink: 0; position: sticky; top: 0; height: 100vh; }
+.logo { padding: 0 20px 24px; border-bottom: 0.5px solid var(--border); margin-bottom: 16px; }
+.logo-title { font-size: 14px; font-weight: 500; color: var(--text); line-height: 1.3; }
+.logo-sub { font-size: 11px; color: var(--text3); margin-top: 2px; font-family: var(--mono); }
+.nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 20px; font-size: 13px; color: var(--text2); cursor: pointer; border-right: 2px solid transparent; transition: all 0.15s; }
+.nav-item:hover { background: var(--surface2); color: var(--text); }
+.nav-item.active { color: var(--blue); background: var(--blue-bg); border-right-color: var(--blue-mid); font-weight: 500; }
+.nav-item i { font-size: 16px; }
+.sidebar-bottom { margin-top: auto; padding: 16px 20px 0; border-top: 0.5px solid var(--border); }
+.btc-pill { font-size: 11px; font-family: var(--mono); color: var(--text2); background: var(--surface2); padding: 6px 10px; border-radius: var(--radius-sm); display: flex; align-items: center; gap: 5px; }
+.main { flex: 1; padding: 32px; max-width: 960px; overflow-y: auto; }
+.page { display: none; animation: fadeIn 0.2s ease; }
+.page.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+.page-title { font-size: 22px; font-weight: 500; margin-bottom: 4px; }
+.page-sub { font-size: 13px; color: var(--text3); margin-bottom: 24px; font-family: var(--mono); }
+
+/* Cards */
+.card { background: var(--surface); border: 0.5px solid var(--border2); border-radius: var(--radius); padding: 20px; margin-bottom: 16px; }
+.card-title { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text3); margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
+
+/* Metrics */
+.metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 20px; }
+.metric { background: var(--surface); border: 0.5px solid var(--border2); border-radius: var(--radius); padding: 16px; }
+.metric-label { font-size: 11px; color: var(--text3); margin-bottom: 6px; font-family: var(--mono); }
+.metric-value { font-size: 22px; font-weight: 500; font-family: var(--mono); }
+.v-green { color: var(--green-mid); } .v-amber { color: var(--amber-mid); } .v-red { color: var(--red-mid); } .v-blue { color: var(--blue-mid); }
+
+/* Grid */
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+
+/* Badges */
+.badge { display: inline-block; font-size: 10px; padding: 2px 8px; border-radius: 20px; font-weight: 500; font-family: var(--mono); }
+.b-green { background: var(--green-bg); color: var(--green); }
+.b-amber { background: var(--amber-bg); color: var(--amber); }
+.b-red { background: var(--red-bg); color: var(--red); }
+.b-blue { background: var(--blue-bg); color: var(--blue); }
+.b-gray { background: var(--surface2); color: var(--text3); }
+
+/* Table */
+.tbl { width: 100%; border-collapse: collapse; font-size: 13px; }
+.tbl th { text-align: left; padding: 6px 10px; font-size: 11px; font-weight: 500; color: var(--text3); border-bottom: 0.5px solid var(--border2); font-family: var(--mono); }
+.tbl th:not(:first-child) { text-align: right; }
+.tbl td { padding: 8px 10px; border-bottom: 0.5px solid var(--border); font-family: var(--mono); font-size: 12px; }
+.tbl td:not(:first-child) { text-align: right; }
+.tbl tr:last-child td { border-bottom: none; }
+.tbl tr.ok td:first-child { color: var(--green-mid); font-weight: 500; font-family: 'DM Sans', sans-serif; font-size: 13px; }
+.tbl tr.missing td:first-child { color: var(--text3); font-family: 'DM Sans', sans-serif; font-size: 13px; }
+
+/* Rows */
+.row { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 0.5px solid var(--border); font-size: 13px; gap: 8px; }
+.row:last-child { border-bottom: none; }
+.row-label { color: var(--text2); flex: 1; }
+.row-val { font-family: var(--mono); font-size: 12px; font-weight: 500; white-space: nowrap; }
+
+/* Total bars */
+.total-bar { border-radius: var(--radius-sm); padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; margin-top: 12px; }
+.tb-green { background: var(--green-bg); }
+.tb-green span { color: var(--green); }
+.tb-red { background: var(--red-bg); }
+.tb-red span { color: var(--red); }
+.tb-blue { background: var(--blue-bg); }
+.tb-blue span { color: var(--blue); }
+.tb-amber { background: var(--amber-bg); }
+.tb-amber span { color: var(--amber); }
+.tb-lbl { font-size: 12px; font-weight: 500; }
+.tb-val { font-size: 18px; font-weight: 500; font-family: var(--mono); }
+
+/* Forms */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+.form-full { grid-column: 1 / -1; }
+.form-group label { display: block; font-size: 11px; color: var(--text3); margin-bottom: 4px; font-family: var(--mono); }
+.form-group input, .form-group select, .form-group textarea {
+  width: 100%; padding: 8px 12px; font-size: 13px; font-family: 'DM Sans', sans-serif;
+  background: var(--bg); border: 0.5px solid var(--border2); border-radius: var(--radius-sm);
+  color: var(--text); outline: none; transition: border-color 0.15s;
+}
+.form-group input:focus, .form-group select:focus { border-color: var(--blue-mid); background: var(--surface); }
+.hint-box { font-size: 12px; color: var(--text2); background: var(--surface2); padding: 8px 12px; border-radius: var(--radius-sm); margin-bottom: 12px; font-family: var(--mono); }
+.btn-primary { width: 100%; padding: 10px; font-size: 13px; font-weight: 500; font-family: 'DM Sans', sans-serif;
+  background: var(--text); color: var(--bg); border: none; border-radius: var(--radius-sm); cursor: pointer; transition: opacity 0.15s; display: flex; align-items: center; justify-content: center; gap: 6px; }
+.btn-primary:hover { opacity: 0.85; }
+.btn-ghost { background: none; border: 0.5px solid var(--border2); padding: 5px 10px; border-radius: var(--radius-sm); font-size: 12px; cursor: pointer; color: var(--text2); font-family: 'DM Sans', sans-serif; }
+.btn-ghost:hover { background: var(--surface2); }
+.btn-del { background: none; border: none; color: var(--text3); cursor: pointer; padding: 3px 6px; border-radius: var(--radius-sm); font-size: 13px; }
+.btn-del:hover { background: var(--red-bg); color: var(--red); }
+.feedback { font-size: 12px; min-height: 20px; margin-top: 8px; font-family: var(--mono); }
+.fb-ok { color: var(--green-mid); } .fb-err { color: var(--red-mid); }
+
+/* Month header */
+.month-hdr { font-size: 13px; font-weight: 500; padding: 10px 0 6px; border-bottom: 0.5px solid var(--border2); margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
+.month-hdr-sub { font-size: 11px; color: var(--text3); font-family: var(--mono); }
+
+/* Progress bar */
+.prog-track { background: var(--surface2); border-radius: 4px; height: 4px; overflow: hidden; margin-bottom: 16px; }
+.prog-fill { height: 100%; background: var(--blue-mid); border-radius: 4px; transition: width 0.4s ease; }
+
+/* Chart */
+.chart-wrap { position: relative; width: 100%; }
+
+/* Dot */
+.dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+
+/* Divider */
+.divider { border: none; border-top: 0.5px solid var(--border); margin: 12px 0; }
+
+/* Date chip */
+.date-chip { font-size: 11px; font-family: var(--mono); color: var(--text3); background: var(--surface2); padding: 4px 8px; border-radius: var(--radius-sm); }
 </style>
 </head>
 <body>
-<div class="wrap">
- <header class="top">
-   <h1>Financial Dashboard 2026</h1>
-   <p>Hours worked, salary (approx vs payslip), patrimony &amp; May–June projection · Lucas</p>
- </header>
+<div class="shell">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="logo">
+      <div class="logo-title">Planeamento<br>Financeiro</div>
+      <div class="logo-sub">2026 · Irlanda 🇮🇪</div>
+    </div>
+    <nav>
+      <div class="nav-item active" onclick="go('dashboard',this)"><i class="ti ti-layout-dashboard"></i> Dashboard</div>
+      <div class="nav-item" onclick="go('horas',this)"><i class="ti ti-clock"></i> Horas</div>
+      <div class="nav-item" onclick="go('receber',this)"><i class="ti ti-inbox"></i> A receber</div>
+      <div class="nav-item" onclick="go('patrimonio',this)"><i class="ti ti-wallet"></i> Patrimônio</div>
+      <div class="nav-item" onclick="go('gastos',this)"><i class="ti ti-receipt"></i> Gastos</div>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="btc-pill"><i class="ti ti-currency-bitcoin" style="font-size:14px"></i><span id="btc-lbl">BTC —</span></div>
+      <div style="font-size:10px;color:var(--text3);margin-top:8px;font-family:var(--mono)" id="date-lbl"></div>
+    </div>
+  </aside>
 
- <nav>
-   <a href="#dashboard">Dashboard</a>
-   <a href="#detail">Monthly detail</a>
-   <a href="#projection">Projection</a>
-   <a href="#analysis">Analysis</a>
- </nav>
+  <!-- MAIN -->
+  <main class="main">
 
- <section id="dashboard">
-   <div class="cards">
-     <div class="card k1"><div class="lab">Current patrimony</div><div class="val" id="c-patr"></div><div class="sub">In account + BTC + cash</div></div>
-     <div class="card k2"><div class="lab">Incoming (to receive)</div><div class="val" id="c-inc"></div><div class="sub">Confirmed, not yet in account</div></div>
-     <div class="card k3"><div class="lab">Projected total</div><div class="val" id="c-proj"></div><div class="sub">Patrimony + incoming</div></div>
-     <div class="card k4"><div class="lab">Earned YTD (approx)</div><div class="val" id="c-ytd"></div><div class="sub">Jan–May, approx wage</div></div>
-   </div>
+    <!-- DASHBOARD -->
+    <div id="pg-dashboard" class="page active">
+      <div class="page-title">Dashboard</div>
+      <div class="page-sub" id="dash-sub">a carregar...</div>
+      <div class="metrics" id="dash-metrics"></div>
+      <div class="grid2">
+        <div>
+          <div class="card">
+            <div class="card-title">Payslips por mês <span id="dash-prog-lbl"></span></div>
+            <div class="prog-track"><div class="prog-fill" id="prog-fill"></div></div>
+            <div class="chart-wrap" style="height:180px"><canvas id="chart-bar" role="img" aria-label="Payslips mensais 2026"></canvas></div>
+          </div>
+        </div>
+        <div>
+          <div class="card">
+            <div class="card-title">A receber (resumo)</div>
+            <div id="dash-receber"></div>
+          </div>
+          <div class="card">
+            <div class="card-title"><i class="ti ti-alert-triangle" style="font-size:13px;vertical-align:-1px;margin-right:4px"></i>Payslips em falta</div>
+            <div id="dash-missing"></div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-   <div class="grid2" style="margin-top:16px">
-     <div class="panel">
-       <h3>Monthly earnings — approx vs payslip (€)</h3>
-       <div class="chartbox"><canvas id="chart"></canvas></div>
-       <div class="note">Payslip bars show only for months with a complete payslip (Jan, Mar, Apr). Feb &amp; May payslips are still partial.</div>
-     </div>
-     <div>
-       <div class="panel">
-         <h3>Patrimony breakdown</h3>
-         <div id="patr-list"></div>
-       </div>
-       <div class="panel" style="margin-top:16px">
-         <h3>May &amp; June projection</h3>
-         <div class="kv"><span>Projected earnings</span><span id="p-earn"></span></div>
-         <div class="kv"><span>Planned expenses</span><span id="p-exp"></span></div>
-         <div class="net"><span>Net result</span><span id="p-net"></span></div>
-       </div>
-     </div>
-   </div>
- </section>
+    <!-- HORAS -->
+    <div id="pg-horas" class="page">
+      <div class="page-title">Horas trabalhadas</div>
+      <div class="page-sub">€14.15/hora · taxa fixa €32/semana</div>
+      <div class="card">
+        <div class="card-title">Registar / editar semana</div>
+        <div class="form-grid">
+          <div class="form-group"><label>Mês</label>
+            <select id="h-mes">
+              <option value="1">Janeiro</option><option value="2">Fevereiro</option><option value="3">Março</option>
+              <option value="4">Abril</option><option value="5" selected>Maio</option><option value="6">Junho</option>
+              <option value="7">Julho</option><option value="8">Agosto</option><option value="9">Setembro</option>
+              <option value="10">Outubro</option><option value="11">Novembro</option><option value="12">Dezembro</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Semana</label>
+            <select id="h-sem"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select>
+          </div>
+          <div class="form-group"><label>Horas trabalhadas</label><input type="number" id="h-horas" placeholder="ex: 36.5" step="0.5" min="0" max="80"></div>
+          <div class="form-group"><label>Payslip real (€)</label><input type="number" id="h-payslip" placeholder="ex: 493.42" step="0.01"></div>
+        </div>
+        <div class="hint-box" id="h-preview">Wage estimado: —</div>
+        <button class="btn-primary" onclick="saveHoras()"><i class="ti ti-check"></i> Guardar semana</button>
+        <div class="feedback" id="h-fb"></div>
+      </div>
+      <div id="horas-list"></div>
+    </div>
 
- <section id="detail">
-   <h2 class="sec">Monthly detail — hours &amp; salary</h2>
-   <div class="panel" id="detail-box"></div>
- </section>
+    <!-- A RECEBER -->
+    <div id="pg-receber" class="page">
+      <div class="page-title">A receber</div>
+      <div class="page-sub">payslips pendentes, holidays, férias, descontos</div>
+      <div class="card">
+        <div class="card-title">Adicionar entrada</div>
+        <div class="form-grid">
+          <div class="form-group form-full"><label>Descrição</label><input type="text" id="r-desc" placeholder="ex: 3ª Sem. Maio, Bank Holiday de Junho..."></div>
+          <div class="form-group"><label>Valor (€) — negativo para desconto</label><input type="number" id="r-val" placeholder="ex: 493.42 ou -150" step="0.01"></div>
+          <div class="form-group"><label>Tipo</label>
+            <select id="r-tipo">
+              <option value="payslip">Payslip</option>
+              <option value="holiday">Bank Holiday / Férias</option>
+              <option value="desconto">Desconto</option>
+              <option value="outro">Outro</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn-primary" onclick="saveReceber()"><i class="ti ti-plus"></i> Adicionar</button>
+        <div class="feedback" id="r-fb"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Todas as entradas <span id="r-count"></span></div>
+        <div id="receber-list"></div>
+        <div class="total-bar tb-blue">
+          <span class="tb-lbl">Total líquido a receber</span>
+          <span class="tb-val" id="r-total">—</span>
+        </div>
+      </div>
+    </div>
 
- <section id="projection">
-   <h2 class="sec">Projection — May &amp; June</h2>
-   <div class="grid2">
-     <div class="panel">
-       <h3>Scheduled earnings</h3>
-       <table id="sched"></table>
-     </div>
-     <div>
-       <div class="panel">
-         <h3>Incoming (confirmed to receive)</h3>
-         <table id="inc"></table>
-       </div>
-       <div class="panel" style="margin-top:16px">
-         <h3>Planned expenses</h3>
-         <table id="exp"></table>
-       </div>
-     </div>
-   </div>
- </section>
+    <!-- PATRIMÔNIO -->
+    <div id="pg-patrimonio" class="page">
+      <div class="page-title">Patrimônio</div>
+      <div class="page-sub">atualiza os valores abaixo sempre que precisares</div>
+      <div class="card">
+        <div class="card-title">Editar valores</div>
+        <div class="form-grid">
+          <div class="form-group"><label>Em conta (€)</label><input type="number" id="p-conta" step="1"></div>
+          <div class="form-group"><label>BTC em euros</label><input type="number" id="p-btc" step="1"></div>
+          <div class="form-group"><label>Cash (€)</label><input type="number" id="p-cash" step="1"></div>
+          <div class="form-group"><label>Outro (€)</label><input type="number" id="p-outro" step="1" placeholder="investimentos, etc."></div>
+          <div class="form-group form-full"><label>Descrição do "Outro"</label><input type="text" id="p-outro-label" placeholder="ex: Nubank, XP, C6..."></div>
+        </div>
+        <button class="btn-primary" onclick="savePatrimonio()"><i class="ti ti-check"></i> Guardar patrimônio</button>
+        <div class="feedback" id="p-fb"></div>
+      </div>
+      <div class="metrics" id="pat-metrics"></div>
+      <div class="grid2">
+        <div class="card">
+          <div class="card-title">Distribuição</div>
+          <div class="chart-wrap" style="height:180px"><canvas id="chart-pat" role="img" aria-label="Distribuição do patrimônio"></canvas></div>
+          <div id="pat-legend" style="display:flex;flex-wrap:wrap;gap:12px;margin-top:12px;font-size:12px;color:var(--text2)"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Detalhe</div>
+          <div id="pat-detalhe"></div>
+          <div class="total-bar tb-green"><span class="tb-lbl">Total</span><span class="tb-val" id="pat-total">—</span></div>
+        </div>
+      </div>
+    </div>
 
- <section id="analysis">
-   <h2 class="sec">Analysis</h2>
-   <div class="panel">
-     <h3>Monthly summary (Jan–May actuals)</h3>
-     <table id="an"></table>
-     <div class="note" id="an-note"></div>
-   </div>
-   <div class="grid2" style="margin-top:16px">
-     <div class="panel"><h3>Key statistics</h3><div id="stats"></div></div>
-     <div class="panel"><h3>Effective rate</h3><div id="rate"></div></div>
-   </div>
- </section>
+    <!-- GASTOS -->
+    <div id="pg-gastos" class="page">
+      <div class="page-title">Gastos programados</div>
+      <div class="page-sub">despesas previstas por mês</div>
+      <div class="card">
+        <div class="card-title">Adicionar gasto</div>
+        <div class="form-grid">
+          <div class="form-group"><label>Descrição</label><input type="text" id="g-desc" placeholder="ex: Aluguel, Luz, Viagem..."></div>
+          <div class="form-group"><label>Valor (€)</label><input type="number" id="g-val" placeholder="ex: 550" step="1" min="0"></div>
+          <div class="form-group"><label>Mês</label>
+            <select id="g-mes">
+              <option value="0">Recorrente (todos)</option>
+              <option value="1">Janeiro</option><option value="2">Fevereiro</option><option value="3">Março</option>
+              <option value="4">Abril</option><option value="5">Maio</option><option value="6">Junho</option>
+              <option value="7">Julho</option><option value="8">Agosto</option><option value="9">Setembro</option>
+              <option value="10">Outubro</option><option value="11">Novembro</option><option value="12">Dezembro</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Categoria</label>
+            <select id="g-cat">
+              <option value="essencial">Essencial</option>
+              <option value="lazer">Lazer</option>
+              <option value="viagem">Viagem</option>
+              <option value="outro">Outro</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn-primary" onclick="saveGasto()"><i class="ti ti-plus"></i> Adicionar gasto</button>
+        <div class="feedback" id="g-fb"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Todos os gastos</div>
+        <div id="gastos-list"></div>
+        <div class="total-bar tb-red"><span class="tb-lbl">Total programado</span><span class="tb-val" id="g-total">—</span></div>
+      </div>
+    </div>
 
- <div class="foot">Built from your hours sheet. Values rounded for display; figures cross-checked against source totals.</div>
+  </main>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script>
-const eur=new Intl.NumberFormat('en-IE',{style:'currency',currency:'EUR'});
-const num=new Intl.NumberFormat('en-IE',{minimumFractionDigits:2,maximumFractionDigits:2});
-const f=v=>v==null?'<span class="muted">—</span>':eur.format(v);
-const tax=43.00;
+const RATE=14.15,TAX=32;
+const MN=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+const PAT_COLORS=['#378ADD','#EF9F27','#888780','#1D9E75'];
+const CAT_BADGE={essencial:'b-blue',lazer:'b-amber',viagem:'b-amber',outro:'b-gray'};
 
-const detail={
- January:[['Week 1',36.5,473.48,493.42],['Week 2',26.4,330.56,404.96],['Week 3',26.55,332.68,367.61],['Week 4',26.2,327.73,360.63]],
- February:[['Week 1',33.1,425.37,450.12],['Week 2',14,155.10,90.00],['Week 3',22.3,272.55,null],['Week 4',31.25,425.75,418.24]],
- March:[['Week 1',36.25,428.25,475.83],['Week 2',38.20,453.60,531.41],['Week 3',38.25,454.25,561.11],['Week 4',31.45,365.85,430.86]],
- April:[['Week 1',33.59,460.85,445.63],['Week 2',46,555.00,614.01],['Week 3',37.3,441.90,507.19],['Week 4',49.45,599.85,663.78],['Week 5',39.45,469.85,531.05]],
- May:[['Week 1',36.2,427.60,493.00],['Week 2',39.45,469.85,null]]
+const DEF={
+  horas:{
+    1:[{w:1,h:36.5,p:493.42},{w:2,h:26.4,p:404.96},{w:3,h:26.55,p:367.61},{w:4,h:26.2,p:360.63}],
+    2:[{w:1,h:33.1,p:450.12},{w:2,h:14,p:90},{w:3,h:22.3,p:null},{w:4,h:31.25,p:418.24}],
+    3:[{w:1,h:36.25,p:475.83},{w:2,h:38.2,p:531.41},{w:3,h:38.25,p:561.11},{w:4,h:31.45,p:430.86}],
+    4:[{w:1,h:33.59,p:445.63},{w:2,h:46,p:614.01},{w:3,h:37.3,p:507.19},{w:4,h:49.45,p:663.78},{w:5,h:39.45,p:531.05}],
+    5:[{w:1,h:36.2,p:493},{w:2,h:39.45,p:531.06},{w:3,h:34.3,p:null}],
+  },
+  patrimonio:{conta:4920,btc:1600,cash:520,outro:0,outro_label:''},
+  receber:[
+    {id:1,desc:'4ª Sem. Abril',val:-663.78,tipo:'desconto'},
+    {id:2,desc:'1ª Sem. Maio',val:493,tipo:'payslip'},
+    {id:3,desc:'2ª Sem. Maio',val:531.06,tipo:'payslip'},
+    {id:4,desc:'3ª Sem. Maio',val:414.5,tipo:'payslip'},
+    {id:5,desc:'5 Bank Holidays',val:500,tipo:'holiday'},
+    {id:6,desc:'7 dias de férias',val:700,tipo:'holiday'},
+  ],
+  gastos:[
+    {id:1,desc:'Aluguel',val:1100,mes:0,cat:'essencial'},
+    {id:2,desc:'Luz',val:120,mes:0,cat:'essencial'},
+    {id:3,desc:'Mercadinhos',val:200,mes:0,cat:'essencial'},
+    {id:4,desc:'Cartões',val:120,mes:0,cat:'essencial'},
+    {id:5,desc:'Viagem',val:600,mes:5,cat:'viagem'},
+  ],
+  nextId:20
 };
-const complete={January:true,February:false,March:true,April:true,May:false};
-const noteByMonth={February:'payslip partial — Week 3 missing',May:'payslip pending — Week 2 not received'};
 
-const months=Object.keys(detail).map(m=>{
- const r=detail[m];
- const hours=r.reduce((s,x)=>s+x[1],0);
- const approx=r.reduce((s,x)=>s+x[2],0);
- const payAll=r.reduce((s,x)=>s+(x[3]||0),0);
- const payslip=complete[m]?payAll:null;
- return {m,hours,approx,payslip,payPartial:payAll,complete:complete[m]};
-});
-const ytd=months.reduce((s,x)=>s+x.approx,0);
+const STORE_KEY='fin2026_app';
+let S=JSON.parse(JSON.stringify(DEF));
+function loadData(){try{const d=localStorage.getItem(STORE_KEY);if(d)S=JSON.parse(d);}catch{}}
+function saveData(){try{localStorage.setItem(STORE_KEY,JSON.stringify(S));}catch{}}
 
-const patrimony=[['In account',4941.00],['BTC',1500.00],['Cash',325.00]];
-const patrTotal=patrimony.reduce((s,x)=>s+x[1],0);
-const incoming=[['April – Week 4',663.78],['April – Week 5',531.05],['May – Week 1',493.00],['May – Week 2',480.00],['Bank holidays (5)',500.00],['Holidays (7 days)',700.00]];
-const incTotal=incoming.reduce((s,x)=>s+x[1],0);
-const scheduled=[['May – Week 3',480.00,113.20],['May – Week 4',488.55,null],['June – Week 1',488.55,240.55],['June – Week 2',84.90,null],['June – Week 3',226.40,null],['June – Week 4',486.55,240.55],['June – Week 5',486.55,240.55],['Holidays (7 days)',700.00,null]];
-const schedBase=scheduled.reduce((s,x)=>s+x[1],0);
-const schedOT=scheduled.reduce((s,x)=>s+(x[2]||0),0);
-const schedTotal=schedBase+schedOT;
-const expenses=[['Rent',1100.00],['Electricity',120.00],['Groceries',400.00],['Credit cards',280.00],['Travel',600.00]];
-const expTotal=expenses.reduce((s,x)=>s+x[1],0);
-const net=schedTotal-expTotal;
+const fmt=(v,d=2)=>v==null||isNaN(v)?'—':'€'+parseFloat(v).toLocaleString('pt-PT',{minimumFractionDigits:d,maximumFractionDigits:d});
+const wage=h=>h?Math.max(0,parseFloat((h*RATE-TAX).toFixed(2))):0;
+const monthP=m=>(S.horas[m]||[]).reduce((s,w)=>s+(w.p||0),0);
+const monthW=m=>(S.horas[m]||[]).reduce((s,w)=>s+wage(w.h),0);
 
-document.getElementById('c-patr').textContent=eur.format(patrTotal);
-document.getElementById('c-inc').textContent=eur.format(incTotal);
-document.getElementById('c-proj').textContent=eur.format(patrTotal+incTotal);
-document.getElementById('c-ytd').textContent=eur.format(ytd);
-document.getElementById('p-earn').textContent=eur.format(schedTotal);
-document.getElementById('p-exp').textContent=eur.format(expTotal);
-document.getElementById('p-net').textContent=(net>=0?'+':'')+eur.format(net);
-
-let pl='';
-patrimony.forEach(([k,v])=>pl+=`<div class="kv"><span>${k}</span><span>${eur.format(v)}</span></div>`);
-pl+=`<div class="kv tot"><span>Total</span><span>${eur.format(patrTotal)}</span></div>`;
-pl+=`<div class="kv tot" style="color:var(--green)"><span>+ Incoming</span><span>${eur.format(patrTotal+incTotal)}</span></div>`;
-document.getElementById('patr-list').innerHTML=pl;
-
-let dh='';
-Object.keys(detail).forEach(m=>{
- const r=detail[m];const t=months.find(x=>x.m===m);
- dh+=`<div class="month-h">${m}${t.complete?'':'<span class="tag">'+noteByMonth[m]+'</span>'}</div>`;
- dh+='<table><thead><tr><th>Week</th><th>Hours</th><th>Tax (approx)</th><th>Approx wage</th><th>Payslip</th><th>Difference</th></tr></thead><tbody>';
- r.forEach(([w,h,a,p])=>{
-   const d=p==null?null:p-a;
-   dh+=`<tr><td>${w}</td><td>${num.format(h)}</td><td>${eur.format(tax)}</td><td>${eur.format(a)}</td><td>${f(p)}</td><td>${d==null?'<span class="muted">—</span>':'<span class="'+(d>=0?'pos':'neg')+'">'+(d>=0?'+':'')+num.format(d)+'</span>'}</td></tr>`;
- });
- const dt=t.complete?t.payslip-t.approx:null;
- dh+=`<tr class="total"><td>Total</td><td>${num.format(t.hours)}</td><td>${eur.format(tax*r.length)}</td><td>${eur.format(t.approx)}</td><td>${t.complete?eur.format(t.payslip):f(null)}</td><td>${dt==null?'<span class="muted">—</span>':'<span class="'+(dt>=0?'pos':'neg')+'">'+(dt>=0?'+':'')+num.format(dt)+'</span>'}</td></tr>`;
- dh+='</tbody></table>';
-});
-document.getElementById('detail-box').innerHTML=dh;
-
-function tbl(id,head,rows,foot){
- let h='<thead><tr>'+head.map(x=>`<th>${x}</th>`).join('')+'</tr></thead><tbody>';
- rows.forEach(r=>h+='<tr>'+r.map((c,i)=>`<td>${i===0?c:c}</td>`).join('')+'</tr>');
- if(foot)h+='<tr class="total">'+foot.map(c=>`<td>${c}</td>`).join('')+'</tr>';
- document.getElementById(id).innerHTML=h+'</tbody>';
+function go(id,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('pg-'+id).classList.add('active');
+  el.classList.add('active');
+  renders[id]&&renders[id]();
 }
-tbl('sched',['Period','Earnings','Overtime'],
- scheduled.map(([p,b,o])=>[p,eur.format(b),f(o)]),
- ['Total','<span title="earnings + overtime">'+eur.format(schedTotal)+'</span>',eur.format(schedOT)]);
-tbl('inc',['Source','Amount'],incoming.map(([s,v])=>[s,eur.format(v)]),['Total',eur.format(incTotal)]);
-tbl('exp',['Item','Amount'],expenses.map(([s,v])=>[s,eur.format(v)]),['Total',eur.format(expTotal)]);
 
-let ah='<thead><tr><th>Month</th><th>Hours</th><th>Approx wage</th><th>Payslip</th><th>Difference</th><th>Diff %</th><th>Approx €/h</th></tr></thead><tbody>';
-months.forEach(t=>{
- const d=t.complete?t.payslip-t.approx:null;
- const pc=t.complete?d/t.approx:null;
- ah+=`<tr><td>${t.m}</td><td>${num.format(t.hours)}</td><td>${eur.format(t.approx)}</td><td>${t.complete?eur.format(t.payslip):f(null)}</td><td>${d==null?'<span class="muted">—</span>':'<span class="pos">+'+num.format(d)+'</span>'}</td><td>${pc==null?'<span class="muted">—</span>':(pc*100).toFixed(1)+'%'}</td><td>${eur.format(t.approx/t.hours)}</td></tr>`;
+/* DASHBOARD */
+function renderDashboard(){
+  const totP=Object.keys(S.horas).reduce((s,m)=>s+monthP(parseInt(m)),0);
+  const totH=Object.values(S.horas).flat().reduce((s,w)=>s+(w.h||0),0);
+  const pat=S.patrimonio;
+  const totPat=pat.conta+pat.btc+pat.cash+(pat.outro||0);
+  const totRec=S.receber.reduce((s,r)=>s+r.val,0);
+  const months=Object.keys(S.horas).length;
+
+  document.getElementById('dash-sub').textContent=`${months} meses registados · €14.15/hora · taxa €32/semana`;
+  document.getElementById('dash-metrics').innerHTML=`
+    <div class="metric"><div class="metric-label">Total payslips</div><div class="metric-value v-green">${fmt(totP)}</div></div>
+    <div class="metric"><div class="metric-label">Total horas</div><div class="metric-value">${totH.toFixed(1)}h</div></div>
+    <div class="metric"><div class="metric-label">Patrimônio</div><div class="metric-value v-blue">${fmt(totPat)}</div></div>
+    <div class="metric"><div class="metric-label">A receber</div><div class="metric-value ${totRec>=0?'v-amber':'v-red'}">${fmt(totRec)}</div></div>
+  `;
+  document.getElementById('dash-prog-lbl').innerHTML=`<span class="badge b-gray">${months}/12</span>`;
+  document.getElementById('prog-fill').style.width=Math.round((months/12)*100)+'%';
+
+  const top=S.receber.slice(0,5);
+  document.getElementById('dash-receber').innerHTML=(top.length?top.map(r=>`
+    <div class="row"><span class="row-label">${r.desc}</span>
+    <span class="row-val" style="color:${r.val<0?'var(--red-mid)':r.tipo==='holiday'?'var(--amber-mid)':'var(--green-mid)'}">${fmt(r.val)}</span></div>`).join('')
+    +'<div class="total-bar tb-blue" style="margin-top:8px"><span class="tb-lbl">Total</span><span class="tb-val">'+fmt(totRec)+'</span></div>'
+    :`<p style="font-size:12px;color:var(--text3);padding:8px 0">Sem entradas. Vai a "A receber".</p>`);
+
+  const missing=[];
+  Object.entries(S.horas).forEach(([m,ws])=>ws.forEach(w=>{if(w.h&&w.p==null)missing.push(`${MN[parseInt(m)-1]} Sem ${w.w}`);}));
+  document.getElementById('dash-missing').innerHTML=missing.length===0
+    ?`<div style="font-size:12px;color:var(--green-mid);padding:8px 0"><i class="ti ti-check"></i> Tudo em dia</div>`
+    :missing.map(x=>`<div class="row"><span class="row-label">${x}</span><span class="badge b-amber">Em falta</span></div>`).join('');
+
+  renderChartBar();
+}
+
+/* HORAS */
+function renderHoras(){
+  let html='';
+  for(let m=1;m<=12;m++){
+    const ws=S.horas[m];if(!ws||!ws.length)continue;
+    html+=`<div class="card"><div class="month-hdr">${MN[m-1]}
+      <span class="month-hdr-sub">Wage est. ${fmt(monthW(m))} &nbsp;·&nbsp; Payslip ${monthP(m)?fmt(monthP(m)):'—'}</span></div>
+    <table class="tbl"><tr><th>Semana</th><th>Horas</th><th>Wage est.</th><th>Payslip</th><th>Estado</th><th></th></tr>`;
+    ws.forEach(w=>{
+      const estado=w.p==null&&w.h?`<span class="badge b-amber">?</span>`:w.p?`<span class="badge b-green">OK</span>`:`<span class="badge b-gray">—</span>`;
+      html+=`<tr class="${w.h?'ok':'missing'}">
+        <td>Sem ${w.w}</td><td>${w.h?w.h+'h':'—'}</td>
+        <td>${w.h?fmt(wage(w.h)):'—'}</td><td>${w.p!=null?fmt(w.p):'—'}</td>
+        <td>${estado}</td><td><button class="btn-del" onclick="delHora(${m},${w.w})" title="Apagar"><i class="ti ti-trash"></i></button></td>
+      </tr>`;
+    });
+    html+=`</table></div>`;
+  }
+  document.getElementById('horas-list').innerHTML=html||`<div class="card" style="color:var(--text3);font-size:13px">Sem horas registadas ainda.</div>`;
+}
+
+/* A RECEBER */
+function renderReceber(){
+  const tot=S.receber.reduce((s,r)=>s+r.val,0);
+  document.getElementById('r-total').textContent=fmt(tot);
+  document.getElementById('r-count').innerHTML=`<span class="badge b-gray">${S.receber.length} entradas</span>`;
+  const tipo_color={payslip:'v-green',holiday:'v-amber',desconto:'v-red',outro:''};
+  document.getElementById('receber-list').innerHTML=S.receber.length?S.receber.map(r=>`
+    <div class="row">
+      <span class="row-label">${r.desc} <span class="badge b-gray" style="margin-left:4px">${r.tipo}</span></span>
+      <span style="display:flex;align-items:center;gap:10px">
+        <span class="row-val ${tipo_color[r.tipo]||''}">${fmt(r.val)}</span>
+        <button class="btn-del" onclick="delReceber(${r.id})" title="Apagar"><i class="ti ti-trash"></i></button>
+      </span>
+    </div>`).join(''):`<p style="font-size:12px;color:var(--text3);padding:8px 0">Nenhuma entrada ainda.</p>`;
+}
+
+/* PATRIMÔNIO */
+function renderPatrimonio(){
+  const p=S.patrimonio;
+  document.getElementById('p-conta').value=p.conta||'';
+  document.getElementById('p-btc').value=p.btc||'';
+  document.getElementById('p-cash').value=p.cash||'';
+  document.getElementById('p-outro').value=p.outro||'';
+  document.getElementById('p-outro-label').value=p.outro_label||'';
+  const total=p.conta+p.btc+p.cash+(p.outro||0);
+  document.getElementById('pat-total').textContent=fmt(total);
+  document.getElementById('pat-metrics').innerHTML=`
+    <div class="metric"><div class="metric-label">Em conta</div><div class="metric-value v-blue">${fmt(p.conta)}</div></div>
+    <div class="metric"><div class="metric-label">BTC</div><div class="metric-value v-amber">${fmt(p.btc)}</div></div>
+    <div class="metric"><div class="metric-label">Cash</div><div class="metric-value">${fmt(p.cash)}</div></div>
+    ${p.outro?`<div class="metric"><div class="metric-label">${p.outro_label||'Outro'}</div><div class="metric-value v-green">${fmt(p.outro)}</div></div>`:''}
+  `;
+  const labels=['Conta','BTC','Cash'];const vals=[p.conta,p.btc,p.cash];
+  if(p.outro){labels.push(p.outro_label||'Outro');vals.push(p.outro);}
+  document.getElementById('pat-detalhe').innerHTML=labels.map((l,i)=>`
+    <div class="row"><span style="display:flex;align-items:center;gap:8px;color:var(--text2)"><span class="dot" style="background:${PAT_COLORS[i]}"></span>${l}</span>
+    <span class="row-val">${fmt(vals[i])}</span></div>`).join('');
+  document.getElementById('pat-legend').innerHTML=labels.map((l,i)=>`
+    <span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:2px;background:${PAT_COLORS[i]}"></span>${l} ${fmt(vals[i])}</span>`).join('');
+  renderChartPat(labels,vals);
+}
+
+/* GASTOS */
+function renderGastos(){
+  const tot=S.gastos.reduce((s,g)=>s+g.val,0);
+  document.getElementById('g-total').textContent=fmt(tot);
+  document.getElementById('gastos-list').innerHTML=S.gastos.length?S.gastos.map(g=>`
+    <div class="row">
+      <span class="row-label">${g.desc}
+        <span class="badge b-gray" style="margin-left:4px">${g.mes?MN[g.mes-1]:'Recorrente'}</span>
+        <span class="badge ${CAT_BADGE[g.cat]||'b-gray'}" style="margin-left:3px">${g.cat}</span>
+      </span>
+      <span style="display:flex;align-items:center;gap:10px">
+        <span class="row-val v-red">${fmt(g.val)}</span>
+        <button class="btn-del" onclick="delGasto(${g.id})" title="Apagar"><i class="ti ti-trash"></i></button>
+      </span>
+    </div>`).join(''):`<p style="font-size:12px;color:var(--text3);padding:8px 0">Nenhum gasto registado.</p>`;
+}
+
+/* CHARTS */
+let cBar=null,cPat=null;
+function renderChartBar(){
+  const labels=[],data=[];
+  for(let m=1;m<=12;m++){const t=monthP(m);if(t>0){labels.push(MN[m-1].slice(0,3));data.push(parseFloat(t.toFixed(2)));}}
+  if(cBar){cBar.destroy();cBar=null;}
+  const ctx=document.getElementById('chart-bar');if(!ctx)return;
+  cBar=new Chart(ctx,{type:'bar',data:{labels,datasets:[{label:'€',data,backgroundColor:'#378ADD',borderRadius:5}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+      scales:{y:{ticks:{callback:v=>'€'+Math.round(v)},grid:{color:'rgba(0,0,0,0.04)'}},x:{ticks:{autoSkip:false,maxRotation:0},grid:{display:false}}}}});
+}
+function renderChartPat(labels,vals){
+  if(cPat){cPat.destroy();cPat=null;}
+  const ctx=document.getElementById('chart-pat');if(!ctx)return;
+  const f=labels.map((l,i)=>({l,v:vals[i],c:PAT_COLORS[i]})).filter(x=>x.v>0);
+  cPat=new Chart(ctx,{type:'doughnut',data:{labels:f.map(x=>x.l),datasets:[{data:f.map(x=>x.v),backgroundColor:f.map(x=>x.c),borderWidth:0}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},cutout:'65%'}});
+}
+
+/* ACTIONS */
+async function saveHoras(){
+  const m=parseInt(document.getElementById('h-mes').value);
+  const s=parseInt(document.getElementById('h-sem').value);
+  const h=parseFloat(document.getElementById('h-horas').value)||0;
+  const pv=document.getElementById('h-payslip').value;
+  const p=pv!==''?parseFloat(pv):null;
+  if(!h){fb('h-fb','Insere as horas trabalhadas.',false);return;}
+  if(!S.horas[m])S.horas[m]=[];
+  const idx=S.horas[m].findIndex(w=>w.w===s);
+  if(idx>=0)S.horas[m][idx]={w:s,h,p};else S.horas[m].push({w:s,h,p});
+  S.horas[m].sort((a,b)=>a.w-b.w);
+  saveData();
+  fb('h-fb',`Guardado! ${MN[m-1]} Sem ${s}: ${h}h → wage est. ${fmt(wage(h))}`,true);
+  document.getElementById('h-horas').value='';document.getElementById('h-payslip').value='';
+  document.getElementById('h-preview').textContent='Wage estimado: —';
+  renderDashboard();renderHoras();
+}
+function delHora(m,w){
+  if(!S.horas[m])return;
+  S.horas[m]=S.horas[m].filter(x=>x.w!==w);
+  if(!S.horas[m].length)delete S.horas[m];
+  saveData();renderDashboard();renderHoras();
+}
+function saveReceber(){
+  const desc=document.getElementById('r-desc').value.trim();
+  const val=parseFloat(document.getElementById('r-val').value);
+  const tipo=document.getElementById('r-tipo').value;
+  if(!desc||isNaN(val)){fb('r-fb','Preenche descrição e valor.',false);return;}
+  S.receber.push({id:S.nextId++,desc,val,tipo});
+  saveData();
+  fb('r-fb',`Adicionado: ${desc} — ${fmt(val)}`,true);
+  document.getElementById('r-desc').value='';document.getElementById('r-val').value='';
+  renderDashboard();renderReceber();
+}
+function delReceber(id){S.receber=S.receber.filter(r=>r.id!==id);saveData();renderReceber();renderDashboard();}
+function savePatrimonio(){
+  const conta=parseFloat(document.getElementById('p-conta').value);
+  const btc=parseFloat(document.getElementById('p-btc').value);
+  const cash=parseFloat(document.getElementById('p-cash').value);
+  const outro=parseFloat(document.getElementById('p-outro').value)||0;
+  const ol=document.getElementById('p-outro-label').value.trim();
+  if(!isNaN(conta))S.patrimonio.conta=conta;
+  if(!isNaN(btc))S.patrimonio.btc=btc;
+  if(!isNaN(cash))S.patrimonio.cash=cash;
+  S.patrimonio.outro=outro;S.patrimonio.outro_label=ol;
+  saveData();fb('p-fb','Patrimônio atualizado!',true);
+  renderDashboard();renderPatrimonio();
+}
+function saveGasto(){
+  const desc=document.getElementById('g-desc').value.trim();
+  const val=parseFloat(document.getElementById('g-val').value);
+  const mes=parseInt(document.getElementById('g-mes').value);
+  const cat=document.getElementById('g-cat').value;
+  if(!desc||isNaN(val)||val<=0){fb('g-fb','Preenche descrição e valor.',false);return;}
+  S.gastos.push({id:S.nextId++,desc,val,mes,cat});
+  saveData();fb('g-fb',`Adicionado: ${desc} — ${fmt(val)}`,true);
+  document.getElementById('g-desc').value='';document.getElementById('g-val').value='';
+  renderGastos();
+}
+function delGasto(id){S.gastos=S.gastos.filter(g=>g.id!==id);saveData();renderGastos();}
+
+function fb(id,msg,ok){
+  const el=document.getElementById(id);
+  el.className='feedback '+(ok?'fb-ok':'fb-err');
+  el.innerHTML=(ok?'<i class="ti ti-check"></i> ':'')+msg;
+  setTimeout(()=>{el.textContent='';el.className='feedback';},3500);
+}
+
+document.getElementById('h-horas').addEventListener('input',function(){
+  const h=parseFloat(this.value);
+  document.getElementById('h-preview').textContent=h?`Wage estimado: ${fmt(wage(h))}  (${h}h × €${RATE} − €${TAX})`:'Wage estimado: —';
 });
-const totH=months.reduce((s,x)=>s+x.hours,0);
-ah+=`<tr class="total"><td>Total / Avg</td><td>${num.format(totH)}</td><td>${eur.format(ytd)}</td><td class="muted">—</td><td class="muted">—</td><td>12.6%</td><td>${eur.format(ytd/totH)}</td></tr></tbody>`;
-document.getElementById('an').innerHTML=ah;
-document.getElementById('an-note').textContent='Insight: in the months with a complete payslip (Jan, Mar, Apr), the real payslip came in ~9–18% above the approximate estimate (avg +12.6%), so the "approx wage" is a conservative figure. February and May payslips are still partial.';
 
-const best=months.reduce((a,b)=>b.approx>a.approx?b:a);
-const low=months.reduce((a,b)=>b.approx<a.approx?b:a);
-document.getElementById('stats').innerHTML=
- `<div class="kv"><span>Avg hours / month</span><span>${num.format(totH/months.length)}</span></div>`+
- `<div class="kv"><span>Avg approx wage / month</span><span>${eur.format(ytd/months.length)}</span></div>`+
- `<div class="kv"><span>Best month (approx)</span><span>${best.m} · ${eur.format(best.approx)}</span></div>`+
- `<div class="kv"><span>Lowest month (approx)</span><span>${low.m} · ${eur.format(low.approx)}</span></div>`+
- `<div class="kv"><span>Avg payslip vs approx</span><span class="pos">+12.6%</span></div>`;
-document.getElementById('rate').innerHTML=
- `<div class="kv"><span>Approx € / hour (overall)</span><span>${eur.format(ytd/totH)}</span></div>`+
- `<div class="kv"><span>Total hours (Jan–May)</span><span>${num.format(totH)}</span></div>`+
- `<div class="kv"><span>Total approx earned</span><span>${eur.format(ytd)}</span></div>`+
- `<div class="kv"><span>Weekly tax (approx)</span><span>${eur.format(tax)}</span></div>`;
+document.getElementById('date-lbl').textContent=new Date().toLocaleDateString('pt-PT',{day:'numeric',month:'long',year:'numeric'});
 
-new Chart(document.getElementById('chart'),{
- type:'bar',
- data:{labels:months.map(m=>m.m),
-  datasets:[
-   {label:'Approx wage',data:months.map(m=>m.approx),backgroundColor:'#2e75b6',borderRadius:5},
-   {label:'Payslip',data:months.map(m=>m.complete?m.payslip:null),backgroundColor:'#2e7d32',borderRadius:5}
-  ]},
- options:{responsive:true,maintainAspectRatio:false,
-  plugins:{legend:{position:'top'},tooltip:{callbacks:{label:c=>c.dataset.label+': '+eur.format(c.parsed.y)}}},
-  scales:{y:{beginAtZero:true,ticks:{callback:v=>'€'+v}}}}
-});
+async function fetchBTC(){
+  try{
+    const r=await fetch('https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/btc/eur.json');
+    const d=await r.json();
+    if(d&&d.eur)document.getElementById('btc-lbl').textContent=`1 BTC = €${Math.round(d.eur).toLocaleString('pt-PT')}`;
+  }catch{document.getElementById('btc-lbl').textContent='BTC —';}
+}
+
+const renders={dashboard:renderDashboard,horas:renderHoras,receber:renderReceber,patrimonio:renderPatrimonio,gastos:renderGastos};
+
+loadData();
+renderDashboard();
+fetchBTC();
 </script>
 </body>
 </html>
